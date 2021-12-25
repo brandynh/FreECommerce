@@ -4,7 +4,7 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 // The `/api/products` endpoint
 
 // get all products
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   // find all products
   // be sure to include its associated Category and Tag data
 
@@ -20,11 +20,11 @@ router.get('/', (req, res) => {
           attributes: ['id', 'tag_name']}
       ],
     });
-
+    // Request 200 OK
     res.status(200).json(productData);
 
   } catch (err) {
-
+    // Status 500 Internal Server Error
     res.status(500).json(err);
 
   }
@@ -32,7 +32,7 @@ router.get('/', (req, res) => {
 });
 
 // get one product
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
 
@@ -48,11 +48,11 @@ router.get('/:id', (req, res) => {
           attributes: ['tag_name']},
         ]
     });
-
+    // Request 200 OK
     res.status(200).json(singleProductData);
 
   } catch (err) {
-
+    // Status 500 Internal Server Error
     res.status(500).json(err);
     
   }
@@ -82,11 +82,13 @@ router.post('/', (req, res) => {
         return ProductTag.bulkCreate(productTagIdArr);
       }
       // if no product tags, just respond
+      // Request 200 OK
       res.status(200).json(product);
     })
     .then((productTagIds) => res.status(200).json(productTagIds))
     .catch((err) => {
       console.log(err);
+      // Status 400 Bad request
       res.status(400).json(err);
     });
 });
@@ -129,11 +131,12 @@ router.put('/:id', (req, res) => {
     .then((updatedProductTags) => res.json(updatedProductTags))
     .catch((err) => {
       // console.log(err);
+      // Status 400 Bad request
       res.status(400).json(err);
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   // delete one product by its `id` value
 
   try {
@@ -148,7 +151,7 @@ router.delete('/:id', (req, res) => {
     });
 
     if (!deleteProductData) {
-
+      // Status 404 Not Found
       res.status(404).json({
 
         message: 'Product does not exist!'});
@@ -156,11 +159,11 @@ router.delete('/:id', (req, res) => {
       return;
 
     }
-
+    // Request 200 OK
     res.status(200).json(deleteProductData);
 
   } catch (err) {
-
+    // Status 500 Internal Server Error
     res.status(500).json(err);
 
   }
