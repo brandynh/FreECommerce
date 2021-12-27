@@ -11,11 +11,11 @@ router.get('/', async (req, res) => {
 
     const catData = await Category.findAll({
 
-      include: [{
+      include: [
+        
+        {model: Product,
 
-        model: Product,
-
-        attributes: ['id', 'category_id', 'product_name', 'price', 'stock']
+        attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
 
       }],
 
@@ -42,7 +42,8 @@ router.get('/:id', async (req, res) => {
       include: [
         
         {model: Product,
-          attributes: ['id', 'category_id', 'product_name', 'price', 'stock']},
+
+          attributes: ['id', 'product_name', 'price', 'stock', 'category_id']},
 
     ],
 
